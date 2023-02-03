@@ -29,3 +29,6 @@ const Map = ({ location }) => {
 };
 
 export default Map;
+
+
+

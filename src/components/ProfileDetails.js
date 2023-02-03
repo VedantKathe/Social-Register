@@ -1,12 +1,22 @@
-import { Box, Grid, Avatar, Typography } from "@mui/material";
+import { Box, Grid, Avatar, Typography, Button } from "@mui/material";
+import Dialog from "@mui/material/Dialog";
+import { red } from '@mui/material/colors';
 import Map from "./Map";
 import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 
 const ProfileDetails = ({ person }) => {
-
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [loc, setLoc] = useState({});
   const history = useHistory();
+
+  const handleOpen = () => {
+    setIsModalOpen(true);
+  };
+
+  const handleClose = () => {
+    setIsModalOpen(false);
+  };
 
   function Convert(obj) {
     let res = {};
@@ -25,6 +35,46 @@ const ProfileDetails = ({ person }) => {
     <Box sx={{ flexGrow: 1 }}>
       <Grid spacing={4} container>
         <Grid xs={12} item>
+          <Dialog
+            open={isModalOpen}
+            onClose={handleClose}
+            aria-labelledby="simple-dialog-title"
+            scroll="paper"
+            sx={{
+              "& .MuiDialog-container": {
+                alignItems: "flex-start",
+              },
+            }}
+            PaperProps={{ sx: { ml: "85%", mt: "70px", p : "50", minWidth: "200px"} }}
+          >
+            <Grid container className="dialog">
+              <Box
+                sx={{
+                  display: "flex",
+                  flexDirection: "column",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                  width: "100%",
+                }}
+              >
+                <Avatar src={person.profilepicture} sx={{ m: 1 }} />
+                <Typography variant="subtitle1" sx={{ mt: 1 }}>
+                  {person.name}
+                </Typography>
+                <Typography variant="subtitle1" sx={{ mt: 1, mb: 1 }}>
+                {person.email}
+              </Typography>
+                <Button
+                variant="contained"
+                sx={{
+                  borderRadius: 10,
+                  bgcolor: red[400],
+                  m: 1
+                }}
+                onClick={() => history.push(`/`)}>Sign Out</Button>
+              </Box>
+            </Grid>
+          </Dialog>
           <Box
             sx={{
               display: "flex",
@@ -43,7 +93,7 @@ const ProfileDetails = ({ person }) => {
                 flexDirection: "row",
                 justifyContent: "space-between",
               }}
-              onClick={() => history.push(`/`)}
+              onClick={handleOpen}
             >
               <Avatar src={person.profilepicture} sx={{ mb: 1, mr: 1 }} />
               <Typography variant="subtitle1" sx={{ ml: 1, mt: 0.5 }}>
